@@ -1,0 +1,10 @@
+
+.vs/Rouge Force/v15/.suo
+/Builds
+/Builds/*
+/Library
+/Library/*
+Rouge Force.csproj
+Rouge Force.sln
+UnityPackageManager/manifest.json
+.vs/Rouge Force/v15/sqlite3/storage.ide
