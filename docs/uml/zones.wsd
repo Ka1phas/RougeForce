@@ -1,0 +1,118 @@
+@startuml Zones
+    skinparam packageStyle rectangle
+
+    abstract class Zone {
+        -cards: List<Card>
+        #{abstract} visibility: ZoneVisibility
+        #{abstract} owner: ForcePlayer
+        #{abstract} type: ZoneType
+        #{abstract} isOrdered: bool
+        +void addCard(Card card, int index = 0)
+        +void removeCard(int index = 0)
+    }
+    enum ZoneType {
+        Public
+        Hidden
+    }
+    enum ZoneVisibility {
+        Owner
+        Opponent
+        Everyone
+        None
+    }
+
+    abstract class HiddenZone {
+        type: Hidden
+    }
+    abstract class PublicZone {
+        type: Public
+        visibility: Everyone
+    }
+    package {
+        class FieldZone {
+            owner: None
+            isOrdered: false
+        }
+        class ChaseZone {
+            owner: None
+            isOrdered: true
+        }
+    }
+
+    package {
+        class MainDeckZone {
+            visibility: None
+            isOrdered: true
+        }
+        class MagicStoneDeckZone {
+            visibility: None
+            isOrdered: true
+        }
+        class SideDeckZone {
+            visibility: Owner
+            isOrdered: false
+        }
+        class HandZone {
+            visibility: Owner
+            isOrdered: false
+        }
+        class StandbyZone {
+            visibility: Owner
+            isOrdered: true
+        }
+        class ArchiveZone {
+            visiblity: Owner
+            isOrdered: false
+        }
+    }
+    package {
+        class RulerZone {
+            isOrdered: false
+        }
+        class GraveyardZone {
+            isOrdered: true
+        }
+        class RemovedZone {
+            isOrdered: false
+        }
+        class ItemZone {
+            isOrdered: false
+        }
+    }
+
+    Zone -[hidden]right-> ZoneType
+    Zone -[hidden]right-> ZoneVisibility
+
+    HiddenZone -up-|> Zone 
+    PublicZone -down-|> Zone 
+
+    FieldZone --|> PublicZone
+    ChaseZone --|> PublicZone
+
+    RulerZone --|> PublicZone
+    GraveyardZone --|> PublicZone
+    RemovedZone --|> PublicZone
+    ItemZone --|> PublicZone
+
+    HandZone -up-|> HiddenZone
+    StandbyZone -up-|> HiddenZone
+    MainDeckZone -up-|> HiddenZone
+    SideDeckZone -up-|> HiddenZone
+    MagicStoneDeckZone -up-|> HiddenZone
+    ArchiveZone -up-|> HiddenZone
+
+    note as N1
+        These zones have no owner and there exists only one of each zone.
+        Cards placed in these zones belong to the owner of the cards.
+    endnote
+
+    note as N2
+        Who can look at the cards in a specific Zone.
+    endnote
+
+    N1 .. ChaseZone
+    N1 .. FieldZone
+
+    N2 .. ZoneVisibility
+
+@enduml
