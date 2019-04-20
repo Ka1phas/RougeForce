@@ -1,0 +1,153 @@
+@startuml Rouge_Force
+
+class Player {
+    -life : Integer
+    -hasLost : Boolean
+    -gameDeck : GameDeck
+    +isTurnPlayer : Boolean
+
+    concede() : void
+}
+
+class Game {
+
+}
+
+class Card {
+    sides : List<CardSide>
+}
+
+class CardSide {
+    cardType : List<CardType>
+    name : String
+    cost : List<Cost>
+    text: String
+    effects : Effect
+    attribute : List<Attribute>
+    divinity : Integer
+    art : Image
+    additionalInfo : String
+}
+
+class CreatureCard {
+    race : String
+    attackingPower : Integer
+    defendingPower : Integer
+}
+
+class OtherCard {
+    trait : String
+}
+
+class MagicStone {
+    magicStoneType : MagicStoneType
+}
+
+class Ruler {
+    jugdement : Boolean
+}
+
+class Resonator {
+
+}
+
+class Cost {
+    attribute : Attribute
+    quantity : Integer
+    isX : Boolean
+}
+
+class Effect {
+
+}
+
+abstract class Deck {
+    #cards : List<Card>
+    +draw() : Card
+    +shuffle() : void
+    +put(top: Boolean) : void
+}
+
+class MagicStoneDeck {
+    cards : List<MagicStone>
+}
+
+class MainDeck {
+
+}
+
+class ExtraDeck {
+
+}
+
+class RuneDeck {
+
+}
+
+class GameDeck {
+    -mainDeck : MainDeck
+    -magicStoneDeck : MagicStoneDeck
+    -extraDeck : ExtraDeck
+    -runeDeck : RuneDeck
+    -ruler : Ruler
+}
+
+enum CardType {
+    Ruler
+    J_Ruler
+    Magic_Stone
+    Resonator
+    Chant
+    Addition
+    Regalia
+    Rune
+}
+
+enum GeneralCardType {
+    None
+    Special
+    Basic
+    Master
+}
+
+enum MagicStoneType {
+    LightMagicStone
+    FireMagicStone
+    WaterMagicStone
+    WindMagicStone
+    DarknessMagicStone
+}
+
+enum Attribute {
+    Light
+    Fire
+    Water
+    Wind
+    Darkness
+    Void
+}
+
+Player "2" -- Game : play
+Card *-- "1..*" CardSide : has
+CardSide -- "0..*" Effect : has
+CardSide -- "0..*" Cost : has
+Deck -- "0..*" Card : consists_of
+CardSide <|-- OtherCard
+CardSide <|-- CreatureCard
+OtherCard <|-- MagicStone
+CreatureCard <|-- Ruler
+CreatureCard <|-- Resonator
+Deck <|-- MagicStoneDeck
+Deck <|-- MainDeck
+Deck <|-- ExtraDeck
+Deck <|-- RuneDeck
+GameDeck -- "1" MainDeck
+GameDeck -- "1" MagicStoneDeck
+GameDeck -- "1" ExtraDeck
+GameDeck -- "1" RuneDeck
+GameDeck -- "1" Ruler
+
+
+
+
+@enduml
